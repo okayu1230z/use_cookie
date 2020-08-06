@@ -1,7 +1,7 @@
 <?php
 
 /**
- * cookie
+ * user_cookie
  * index.php
  * @since 2020/07/23
  */
@@ -9,8 +9,10 @@
 $flag = '';
 
 if ($_COOKIE["cookie_for_login"] != md5("admin")) {
+  $user = 'guest';
   setcookie("cookie_for_login", md5("guest"));
-} else {
+} else if ($_COOKIE["cookie_for_login"] == md5("admin")) {
+  $user == 'admin';
   $flag = "FLAG{you_can_use_cookie}";
 }
 
@@ -27,9 +29,16 @@ if ($_COOKIE["cookie_for_login"] != md5("admin")) {
 
 <body>
   <div>
-    <p>hey, you are "guest".</p>
-    <p>login as "admin"!</p>
-    <?php echo $flag ?></p>
+    <?php if ($user == 'guest') : ?>
+      <p>Hey, you are <?php print $user ?>.</p>
+      <p>Only "admin" can be used.</p>
+    <?php elseif ($_COOKIE["cookie_for_login"] == md5("admin")): ?>
+      <p><?php echo $flag ?></p>
+      <p>Thank you for getting this flag.</p>
+    <?php else : ?>
+      <p>who are you??</p>
+      <p>Only "admin" can be used</p>
+    <?php endif; ?>
   </div>
 </body>
 </html>
